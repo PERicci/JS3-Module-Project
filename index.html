@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | Pedro Ricciardi (PERicci)</title>
-    <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  </head>
 
-  <body>
-    <div id="root">
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV Show Project | Pedro Ricciardi (PERicci)</title>
+  <link href="style.css" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+</head>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+<body>
+  <template>
+    <h1>Movies from <a href="https://www.tvmaze.com/" target="_blank">TVMAZE</a></h1>
+    <section class="movies-list">
+      <article class="movie-card">
+        <h2 class="movie-card__title"></h2>
+        <div class="movie-card__data">
+          <img src="" alt="" class="movie-card__img">
+          <p class="movie-card__summary"></p>
+        </div>
+      </article>
+    </section>
+  </template>
+  <div id="root">
+  </div>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
-  </body>
+  <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+  <script src="episodes.js"></script>
+
+  <!-- Loads YOUR javascript code -->
+  <script src="script.js"></script>
+</body>
+
 </html>
