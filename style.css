@@ -1,3 +1,31 @@
-#root {
-  color: red;
+body {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: 14px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.episode-card {
+  max-width: 350px;
+
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.episode-card__title {
+  padding: 1rem;
+  margin: 0;
+
+  border: solid 2px #000;
+  border-radius: 10px;
+
+  text-align: center;
+}
+
+.episode-card__data {
+  display: grid;
+  justify-items: center;
+  padding: 1.5rem;
 }

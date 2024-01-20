@@ -6,7 +6,19 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  // const episodeCards = episodeList.map(makeEpisodeCard);
+  const template = document.getElementsByTagName("template")[0];
+  console.log(template);
+  let clone = template.content.cloneNode(true);
+  console.log(clone);
+  rootElem.append(clone);
+
+  // rootElem.append(...episodeCards)
 }
+
+// function makeEpisodeCard(episode) {
+  
+// }
+
 
 window.onload = setup;
