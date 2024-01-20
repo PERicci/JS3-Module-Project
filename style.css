@@ -7,11 +7,17 @@ h1 {
   text-align: center;
 }
 
+.episodes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
 .episode-card {
   max-width: 350px;
 
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .episode-card__title {
