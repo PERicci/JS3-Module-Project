@@ -1,11 +1,13 @@
 //You can edit ALL of the code here
 const template = document.getElementsByTagName("template")[0];
 
+// Load the page
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
 }
 
+// Make the clone of the list, fill with episode cards and append them into the root
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   const episodeListClone = template.content.querySelector(".episodes-list").cloneNode(true);
@@ -16,6 +18,7 @@ function makePageForEpisodes(episodeList) {
   rootElem.append(pageTitle, episodeListClone);
 }
 
+// Make the card
 function makeEpisodeCard(episode) {
   const episodeCard = template.content.querySelector(".episode-card").cloneNode(true);
   const episodeName = episode.name;
