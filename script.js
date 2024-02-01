@@ -41,3 +41,44 @@ function makeEpisodeCard(episode) {
 
 
 window.onload = setup;
+
+
+// This parts is for the search bar and filtering through episodes
+
+document.addEventListener("DOMContentLoaded", function () {
+  setup();
+
+  const searchInput = document.getElementById("search-input");
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    filterEpisodes(searchTerm);
+  });
+});
+
+function filterEpisodes(searchTerm) {
+  const allEpisodes = getAllEpisodes();
+  const filteredEpisodes = allEpisodes.filter(
+    (episode) =>
+      episode.name.toLowerCase().includes(searchTerm) ||
+      episode.summary.toLowerCase().includes(searchTerm)
+  );
+
+  updateEpisodeDisplay(filteredEpisodes);
+}
+
+function updateEpisodeDisplay(filteredEpisodes) {
+  const episodesDisplayAmount = document.querySelector(
+    ".episodes-display-amount"
+  );
+  episodesDisplayAmount.textContent = `Displaying ${filteredEpisodes.length} out of ${getAllEpisodes().length} episodes`;
+
+  const episodesList = document.querySelector(".episodes-list");
+  episodesList.innerHTML = "";
+
+  filteredEpisodes.forEach(function (episode) {
+    const episodeCard = makeEpisodeCard(episode);
+    episodesList.appendChild(episodeCard);
+  });
+}
+
+
