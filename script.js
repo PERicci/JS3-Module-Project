@@ -1,10 +1,10 @@
-//You can edit ALL of the code here
 const template = document.getElementsByTagName("template")[0];
 
 // Load the page
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
+  setupSearch();
 }
 
 // Make the clone of the list, fill with episode cards and append them into the root
@@ -35,9 +35,44 @@ function makeEpisodeCard(episode) {
   episodeCard.querySelector(".episode-card__img").src = episodeImage;
   episodeCard.querySelector(".episode-card__summary").outerHTML = episodeSummary;
 
-
   return episodeCard;
 }
 
+// This parts is for the search bar and filtering through episodes
+function setupSearch() {
+  const searchInput = document.getElementById("search-input");
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    filterEpisodes(searchTerm);
+  });
+}
+
+function filterEpisodes(searchTerm) {
+  const allEpisodes = getAllEpisodes();
+  const filteredEpisodes = allEpisodes.filter(
+    (episode) =>
+      episode.name.toLowerCase().includes(searchTerm) ||
+      episode.summary.toLowerCase().includes(searchTerm)
+  );
+
+  updateEpisodeDisplay(filteredEpisodes);
+}
+
+function updateEpisodeDisplay(filteredEpisodes) {
+  const episodesDisplayAmount = document.querySelector(
+    ".episodes-display-amount"
+  );
+  episodesDisplayAmount.textContent = `Displaying ${filteredEpisodes.length} out of ${getAllEpisodes().length} episodes`;
+
+  const episodesList = document.querySelector(".episodes-list");
+  episodesList.innerHTML = ""; // Clear the current episode list
+
+  filteredEpisodes.forEach(function (episode) {
+    const episodeCard = makeEpisodeCard(episode);
+    episodesList.appendChild(episodeCard);
+  });
+}
 
 window.onload = setup;
+
+
