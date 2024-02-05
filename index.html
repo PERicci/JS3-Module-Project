@@ -8,30 +8,30 @@
   <link href="style.css" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
-
-<header>
-  <section class="search-bar">
-    <h2>Search by Title or Summary</h2>
-    <input type="text" name="search-input" id="search-input" placeholder="Type your search here">
-    <h3 class="episodes-display-amount"></h3>
+<template>
+  <h1>Game of Thrones Episodes - Source: <a href="https://www.tvmaze.com/" target="_blank">TVMAZE</a></h1>
+  <section class="episodes-list">
   </section>
-</header>
+  <article class="episode-card">
+    <h2 class="episode-card__title"></h2>
+    <div class="episode-card__data">
+      <img src="#" alt="" class="episode-card__img">
+      <p class="episode-card__summary"></p>
+    </div>
+  </article>
+</template>
 
 <body>
-  <template>
-    <h1>Game of Thrones Episodes - Source: <a href="https://www.tvmaze.com/" target="_blank">TVMAZE</a></h1>
-    <section class="episodes-list">
+  <header>
+    <section class="search-bar">
+      <h2>Search by Title or Summary</h2>
+      <input type="text" name="search-input" id="search-input" placeholder="Type your search here">
+      <h3 class="episodes-display-amount"></h3>
     </section>
-    <article class="episode-card">
-      <h2 class="episode-card__title"></h2>
-      <div class="episode-card__data">
-        <img src="#" alt="" class="episode-card__img">
-        <p class="episode-card__summary"></p>
-      </div>
-    </article>
-  </template>
-  <div id="root">
-  </div>
+  </header>
+
+  <main id="root">
+  </main>
 
   <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
   <script src="episodes.js"></script>
