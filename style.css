@@ -56,3 +56,10 @@ header {
   justify-items: center;
   padding: 1.5rem;
 }
+
+#fetch-message {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 2rem;
+}

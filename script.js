@@ -1,5 +1,7 @@
 const template = document.getElementsByTagName("template")[0];
 const rootElem = document.getElementById("root");
+const bodyElem = document.getElementsByTagName("body")[0];
+
 let allEpisodes
 const api = 'https://api.tvmaze.com/shows/82'
 
@@ -8,12 +10,13 @@ fetch(`${api}/episodes`)
   .then((response) => response.json())
   .then((data) => allEpisodes = data)
   .then(() => makePageForEpisodes(allEpisodes))
-  .then(() => setupSearch());
+  .then(() => setupSearch())
+  .catch((error) => fetchMessage(error));
 
 // Set the correct series name
 fetch(api)
   .then((response) => response.json())
-  .then((data) => setSeriesName(data.name));
+  .then((data) => setSeriesName(data.name))
 
 function setSeriesName(seriesName) {
   const seriesNameField = document.querySelector("#series-name");
@@ -83,4 +86,9 @@ function updateEpisodeListCounter(episodeList) {
   episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
 }
 
-
+function fetchMessage(message) {
+  const fetchMessageContainer = template.content.querySelector("#fetch-message").cloneNode(true);
+  fetchMessageContainer.textContent = message;
+  bodyElem.innerHTML = "";
+  bodyElem.appendChild(fetchMessageContainer);
+}
