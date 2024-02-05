@@ -1,16 +1,17 @@
 const template = document.getElementsByTagName("template")[0];
 const rootElem = document.getElementById("root");
 let allEpisodes
+const api = 'https://api.tvmaze.com/shows/82'
 
 // fetch data from tvmaze and setup the page
-fetch('https://api.tvmaze.com/shows/82/episodes')
+fetch(`${api}/episodes`)
   .then((response) => response.json())
   .then((data) => allEpisodes = data)
   .then(() => makePageForEpisodes(allEpisodes))
   .then(() => setupSearch());
 
-// set the correct series name
-fetch('https://api.tvmaze.com/shows/82')
+// Set the correct series name
+fetch(api)
   .then((response) => response.json())
   .then((data) => setSeriesName(data.name));
 
@@ -51,7 +52,7 @@ function makeEpisodeCard(episode) {
   episodeCard.querySelector(".episode-card__title")
     .innerText = episodeTitle;
 
-  episodeCard.querySelector(".episode-card__img").src = episodeImage;
+  episodeCard.querySelector(".episode-card__img").src = episodeImage || './No-Image-Placeholder.png';
   episodeCard.querySelector(".episode-card__summary").outerHTML = episodeSummary;
 
   return episodeCard;
