@@ -5,10 +5,15 @@ const bodyElem = document.getElementsByTagName("body")[0];
 let allEpisodes
 const api = 'https://api.tvmaze.com/shows/82'
 
+fetchMessage("Loading episodes")
+
 // fetch data from tvmaze and setup the page
 fetch(`${api}/episodes`)
   .then((response) => response.json())
-  .then((data) => allEpisodes = data)
+  .then((data) => {
+    allEpisodes = data;
+    fetchMessage("");
+  })
   .then(() => makePageForEpisodes(allEpisodes))
   .then(() => setupSearch())
   .catch((error) => fetchMessage(error));
@@ -87,8 +92,12 @@ function updateEpisodeListCounter(episodeList) {
 }
 
 function fetchMessage(message) {
-  const fetchMessageContainer = template.content.querySelector("#fetch-message").cloneNode(true);
-  fetchMessageContainer.textContent = message;
-  bodyElem.innerHTML = "";
-  bodyElem.appendChild(fetchMessageContainer);
+  const fetchMessageContainer = document.querySelector("#fetch-message") ? document.querySelector("#fetch-message") : template.content.querySelector("#fetch-message").cloneNode(true);
+
+  if (message === "") {
+    fetchMessageContainer.classList.toggle("hidden");
+  } else {
+    fetchMessageContainer.textContent = message;
+    bodyElem.appendChild(fetchMessageContainer);
+  }
 }
