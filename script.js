@@ -1,21 +1,33 @@
 const template = document.getElementsByTagName("template")[0];
+const allEpisodes = getAllEpisodes();
+const rootElem = document.getElementById("root");
 
 // Load the page
 function setup() {
-  const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
   setupSearch();
 }
 
-// Make the clone of the list, fill with episode cards and append them into the root
 function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  const episodeListClone = template.content.querySelector(".episodes-list").cloneNode(true);
-  const pageTitle = template.content.querySelector('h1').cloneNode(true)
+  const episodeListHtml = makeEpisodeListHtml(episodeList)
+  rootElem.append(episodeListHtml);
+  updateEpisodeListCounter(episodeList);
+}
+
+function makeEpisodeListHtml(episodeList) {
+  let episodeListHtml = document.querySelector(".episodes-list");
   const episodeCards = episodeList.map(makeEpisodeCard);
 
-  episodeListClone.append(...episodeCards);
-  rootElem.append(pageTitle, episodeListClone);
+  // If there is a episode list, delete content. If not, clone from the template.
+  episodeListHtml ? episodeListHtml.innerHTML = "" : episodeListHtml = template.content.querySelector(".episodes-list").cloneNode(true)
+
+  episodeListHtml.append(...episodeCards);
+
+  return episodeListHtml;
+}
+
+function makeEpisodeListArray(episodeList, htmlElement) {
+
 }
 
 // Make the card
@@ -31,14 +43,13 @@ function makeEpisodeCard(episode) {
 
   episodeCard.querySelector(".episode-card__title")
     .innerText = episodeTitle;
-  
+
   episodeCard.querySelector(".episode-card__img").src = episodeImage;
   episodeCard.querySelector(".episode-card__summary").outerHTML = episodeSummary;
 
   return episodeCard;
 }
 
-// This parts is for the search bar and filtering through episodes
 function setupSearch() {
   const searchInput = document.getElementById("search-input");
   searchInput.addEventListener("input", function () {
@@ -48,29 +59,20 @@ function setupSearch() {
 }
 
 function filterEpisodes(searchTerm) {
-  const allEpisodes = getAllEpisodes();
   const filteredEpisodes = allEpisodes.filter(
     (episode) =>
       episode.name.toLowerCase().includes(searchTerm) ||
       episode.summary.toLowerCase().includes(searchTerm)
   );
 
-  updateEpisodeDisplay(filteredEpisodes);
+  makePageForEpisodes(filteredEpisodes);
 }
 
-function updateEpisodeDisplay(filteredEpisodes) {
+function updateEpisodeListCounter(episodeList) {
   const episodesDisplayAmount = document.querySelector(
     ".episodes-display-amount"
   );
-  episodesDisplayAmount.textContent = `Displaying ${filteredEpisodes.length} out of ${getAllEpisodes().length} episodes`;
-
-  const episodesList = document.querySelector(".episodes-list");
-  episodesList.innerHTML = ""; // Clear the current episode list
-
-  filteredEpisodes.forEach(function (episode) {
-    const episodeCard = makeEpisodeCard(episode);
-    episodesList.appendChild(episodeCard);
-  });
+  episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
 }
 
 window.onload = setup;
