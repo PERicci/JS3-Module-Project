@@ -1,12 +1,22 @@
 const template = document.getElementsByTagName("template")[0];
-let allEpisodes
 const rootElem = document.getElementById("root");
+let allEpisodes
 
-// Load the page
-async function setup() {
-  allEpisodes = await getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  setupSearch();
+// fetch data from tvmaze and setup the page
+fetch('https://api.tvmaze.com/shows/82/episodes')
+  .then((response) => response.json())
+  .then((data) => allEpisodes = data)
+  .then(() => makePageForEpisodes(allEpisodes))
+  .then(() => setupSearch());
+
+// set the correct series name
+fetch('https://api.tvmaze.com/shows/82')
+  .then((response) => response.json())
+  .then((data) => setSeriesName(data.name));
+
+function setSeriesName(seriesName) {
+  const seriesNameField = document.querySelector("#series-name");
+  seriesNameField.innerText = seriesName;
 }
 
 function makePageForEpisodes(episodeList) {
@@ -15,9 +25,9 @@ function makePageForEpisodes(episodeList) {
   updateEpisodeListCounter(episodeList);
 }
 
-async function makeEpisodeListHtml(episodeList) {
+function makeEpisodeListHtml(episodeList) {
   let episodeListHtml = document.querySelector(".episodes-list");
-  const episodeCards = await episodeList.map(makeEpisodeCard);
+  const episodeCards = episodeList.map(makeEpisodeCard);
 
   // If there is a episode list, delete content. If not, clone from the template.
   episodeListHtml ? episodeListHtml.innerHTML = "" : episodeListHtml = template.content.querySelector(".episodes-list").cloneNode(true)
@@ -25,10 +35,6 @@ async function makeEpisodeListHtml(episodeList) {
   episodeListHtml.append(...episodeCards);
 
   return episodeListHtml;
-}
-
-function makeEpisodeListArray(episodeList, htmlElement) {
-
 }
 
 // Make the card
@@ -75,7 +81,5 @@ function updateEpisodeListCounter(episodeList) {
   );
   episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
 }
-
-window.onload = setup;
 
 
