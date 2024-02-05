@@ -1,9 +1,10 @@
 const template = document.getElementsByTagName("template")[0];
-const allEpisodes = getAllEpisodes();
+let allEpisodes
 const rootElem = document.getElementById("root");
 
 // Load the page
-function setup() {
+async function setup() {
+  allEpisodes = await getAllEpisodes();
   makePageForEpisodes(allEpisodes);
   setupSearch();
 }
@@ -14,9 +15,9 @@ function makePageForEpisodes(episodeList) {
   updateEpisodeListCounter(episodeList);
 }
 
-function makeEpisodeListHtml(episodeList) {
+async function makeEpisodeListHtml(episodeList) {
   let episodeListHtml = document.querySelector(".episodes-list");
-  const episodeCards = episodeList.map(makeEpisodeCard);
+  const episodeCards = await episodeList.map(makeEpisodeCard);
 
   // If there is a episode list, delete content. If not, clone from the template.
   episodeListHtml ? episodeListHtml.innerHTML = "" : episodeListHtml = template.content.querySelector(".episodes-list").cloneNode(true)
