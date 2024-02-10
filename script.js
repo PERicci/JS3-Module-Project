@@ -3,7 +3,7 @@ const rootElem = document.getElementById("root");
 const bodyElem = document.getElementsByTagName("body")[0];
 
 let allEpisodes = []
-const api = 'https://api.tvmaze.com/shows/84'
+const api = 'https://api.tvmaze.com/shows/82'
 
 fetchMessage("Loading episodes")
 
