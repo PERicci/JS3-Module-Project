@@ -2,8 +2,8 @@ const template = document.getElementsByTagName("template")[0];
 const rootElem = document.getElementById("root");
 const bodyElem = document.getElementsByTagName("body")[0];
 
-let allEpisodes
-const api = 'https://api.tvmaze.com/shows/82'
+let allEpisodes = []
+const api = 'https://api.tvmaze.com/shows/84'
 
 fetchMessage("Loading episodes")
 
@@ -11,7 +11,14 @@ fetchMessage("Loading episodes")
 fetch(`${api}/episodes`)
   .then((response) => response.json())
   .then((data) => {
-    allEpisodes = data;
+    if (data.length > 100) {
+      for (let i = 0; i < 100; i++) {
+        allEpisodes.push(data[i])
+      }
+    } else {
+      allEpisodes = [...data];
+    }
+
     fetchMessage("");
   })
   .then(() => makePageForEpisodes(allEpisodes))
