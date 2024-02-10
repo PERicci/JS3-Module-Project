@@ -84,17 +84,40 @@ function makeEpisodeCard(episode) {
 
 function setupSearch() {
   const searchInput = document.getElementById("search-input");
+  const episodeSelector = document.getElementById("episode-selector");
+  const resetSearch = document.getElementById("reset-search");
+
   searchInput.addEventListener("input", function () {
     const searchTerm = searchInput.value.trim().toLowerCase();
     filterEpisodes(searchTerm);
   });
+
+  episodeSelector.addEventListener("change", function () {
+    const selectedEpisode = episodeSelector.value;
+    const searchTerm = selectedEpisode.substring(0, selectedEpisode.indexOf("-"));
+    filterEpisodes(searchTerm);
+  });
+
+  resetSearch.addEventListener("click", function () {
+    filterEpisodes("");
+    searchInput.value = "";
+  })
 }
 
 function filterEpisodes(searchTerm) {
   const filteredEpisodes = allEpisodes.filter(
-    (episode) =>
-      episode.name.toLowerCase().includes(searchTerm) ||
-      episode.summary.toLowerCase().includes(searchTerm)
+    (episode) => {
+      const episodeName = episode.name;
+      const episodeSeason = `${episode.season}`.padStart(2, "0");
+      const episodeNumber = `${episode.number}`.padStart(2, "0");
+
+      const episodeTitle = `${episodeName} - S${episodeSeason}E${episodeNumber}`
+
+      const result = episodeTitle.toLowerCase().includes(searchTerm) ||
+        episode.summary.toLowerCase().includes(searchTerm)
+
+      return result
+    }
   );
 
   makePageForEpisodes(filteredEpisodes);
