@@ -25,11 +25,16 @@
   <header>
     <h1><span id="series-name"></span> Episodes - Source: <a href="https://www.tvmaze.com/" target="_blank">TVMAZE</a>
     </h1>
-
-    <section class="search-bar">
-      <h2>Search by Title or Summary</h2>
-      <input type="text" name="search-input" id="search-input" placeholder="Type your search here">
-      <h3 class="episodes-display-amount"></h3>
+    <section id="show-episode-bar">
+      <section class="search-bar">
+        <h2>Search by Title or Summary</h2>
+        <input type="text" name="search-input" id="search-input" placeholder="Type your search here">
+        <h3 class="episodes-display-amount"></h3>
+      </section>
+      <section class="episode-selector__container">
+        <label for="episode-selector">Select a episode:</label>
+        <select name="episode-selector" id="episode-selector"></select>
+      </section>
     </section>
   </header>
 

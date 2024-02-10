@@ -53,6 +53,11 @@ function makeEpisodeListHtml(episodeList) {
   return episodeListHtml;
 }
 
+function addEpisodeInSelector(episodeNumberAndTitle, episodeOptionValue) {
+  const episodeSelector = document.querySelector("#episode-selector");
+  episodeSelector.innerHTML += `<option value = ${episodeOptionValue}>${episodeNumberAndTitle}</option>`;
+}
+
 // Make the card
 function makeEpisodeCard(episode) {
   const episodeCard = template.content.querySelector(".episode-card").cloneNode(true);
@@ -63,12 +68,16 @@ function makeEpisodeCard(episode) {
   const episodeSummary = episode.summary;
 
   const episodeTitle = `${episodeName} - S${episodeSeason}E${episodeNumber}`
+  const episodeForSelector = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
+  const episodeOptionValue = `S${episodeSeason}E${episodeNumber}-${episodeName}`.toLowerCase().replace(/ /g, "-")
 
   episodeCard.querySelector(".episode-card__title")
     .innerText = episodeTitle;
 
   episodeCard.querySelector(".episode-card__img").src = episodeImage || './No-Image-Placeholder.png';
   episodeCard.querySelector(".episode-card__summary").outerHTML = episodeSummary;
+
+  addEpisodeInSelector(episodeForSelector, episodeOptionValue)
 
   return episodeCard;
 }
