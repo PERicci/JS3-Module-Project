@@ -28,18 +28,20 @@
     <section id="show-episode-bar">
       <section class="search-bar">
         <h2>Search by Title or Summary</h2>
-        <input type="text" name="search-input" id="search-input" placeholder="Type your search here">
-        <h3 class="episodes-display-amount"></h3>
+        <input type="text" name="search-input" id="search-input" placeholder="Type your search here"
+          class="search-input-general">
+
       </section>
-      <section class="episode-selector__container">
-        <label for="episode-selector">Select a episode:</label>
-        <select name="episode-selector" id="episode-selector">
+      <section class="search-bar">
+        <h2>Select a episode:</h2>
+        <select name="episode-selector" id="episode-selector" class="search-input-general">
           <option value="placeholder"></option>
         </select>
       </section>
       <button id="reset-search">
         Reset Search
       </button>
+      <h3 class="episodes-display-amount"></h3>
     </section>
   </header>
 
