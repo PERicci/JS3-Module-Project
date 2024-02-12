@@ -8,6 +8,11 @@ h1 {
   margin-bottom: 2rem;
 }
 
+h2,
+h3 {
+  margin: 0;
+}
+
 label {
   font-size: 1.2rem;
 }
@@ -23,7 +28,21 @@ header {
   text-align: center;
 }
 
+#show-episode-bar {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+}
+
 .search-bar {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#show-episode-selectors__container {
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -44,10 +63,10 @@ header {
 
 .search-bar h2 {
   font-size: 1.3rem;
+  margin: 0;
 }
 
 #reset-search {
-  margin-top: 0.5rem;
   height: 2rem;
   width: 150px;
 
