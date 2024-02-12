@@ -37,6 +37,15 @@ header {
   font-size: 1.5rem;
 }
 
+#reset-search {
+  margin-top: 0.5rem;
+  height: 2rem;
+  width: 150px;
+
+  border-radius: 8px;
+  border: none;
+}
+
 .episodes-list {
   display: flex;
   flex-wrap: wrap;
