@@ -23,6 +23,7 @@ fetch(`${api}/episodes`)
   })
   .then(() => makePageForEpisodes(allEpisodes))
   .then(() => setupSearch())
+  .then(() => allEpisodes.map((episode) => addEpisodeInSelector(episode)))
   .catch((error) => fetchMessage(error));
 
 // Set the correct series name
@@ -53,7 +54,14 @@ function makeEpisodeListHtml(episodeList) {
   return episodeListHtml;
 }
 
-function addEpisodeInSelector(episodeNumberAndTitle, episodeOptionValue) {
+function addEpisodeInSelector(episode) {
+  const episodeName = episode.name;
+  const episodeSeason = `${episode.season}`.padStart(2, "0");
+  const episodeNumber = `${episode.number}`.padStart(2, "0");
+
+  const episodeNumberAndTitle = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
+  const episodeOptionValue = `S${episodeSeason}E${episodeNumber}-${episodeName}`.toLowerCase().replace(/ /g, "-")
+
   const episodeSelector = document.querySelector("#episode-selector");
   episodeSelector.innerHTML += `<option value = ${episodeOptionValue}>${episodeNumberAndTitle}</option>`;
 }
@@ -68,16 +76,13 @@ function makeEpisodeCard(episode) {
   const episodeSummary = episode.summary;
 
   const episodeTitle = `${episodeName} - S${episodeSeason}E${episodeNumber}`
-  const episodeForSelector = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
-  const episodeOptionValue = `S${episodeSeason}E${episodeNumber}-${episodeName}`.toLowerCase().replace(/ /g, "-")
+
 
   episodeCard.querySelector(".episode-card__title")
     .innerText = episodeTitle;
 
   episodeCard.querySelector(".episode-card__img").src = episodeImage || './No-Image-Placeholder.png';
   episodeCard.querySelector(".episode-card__summary").outerHTML = episodeSummary;
-
-  addEpisodeInSelector(episodeForSelector, episodeOptionValue)
 
   return episodeCard;
 }
@@ -101,6 +106,7 @@ function setupSearch() {
   resetSearch.addEventListener("click", function () {
     filterEpisodes("");
     searchInput.value = "";
+    episodeSelector.value = "";
   })
 }
 
