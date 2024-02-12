@@ -44,6 +44,20 @@ header {
 
   border-radius: 8px;
   border: none;
+
+  background-color: #d40d0d;
+  color: white;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease-in-out;
+}
+
+#reset-search:hover {
+  background-color: #c40c0c;
+  scale: 1.05;
+  transition: all 0.2s ease-in-out;
 }
 
 .episodes-list {
