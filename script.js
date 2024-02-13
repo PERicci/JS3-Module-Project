@@ -1,70 +1,112 @@
+const api = 'https://api.tvmaze.com/shows'
+
+document.addEventListener('DOMContentLoaded', function () {
+  fetchShows(api);
+  makePageForEpisodes()
+});
+
 const template = document.getElementsByTagName("template")[0];
 const rootElem = document.getElementById("root");
 const bodyElem = document.getElementsByTagName("body")[0];
 
-let allEpisodes = []
-const api = 'https://api.tvmaze.com/shows/82'
 
-fetchMessage("Loading episodes")
 
-// fetch data from tvmaze and setup the page
-fetch(`${api}/episodes`)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.length > 100) {
-      for (let i = 0; i < 100; i++) {
-        allEpisodes.push(data[i])
-      }
-    } else {
-      allEpisodes = [...data];
-    }
+// Fetch shows
+function fetchShows(api) {
+  let showList = [];
+  fetch(api)
+    .then((response) => response.json())
+    .then((data) => showList = data)
+    .then(() => populateShowSelector(showList))
+}
 
-    fetchMessage("");
+// Populate shows dropdown, and set event listener
+function populateShowSelector(showList) {
+  const orderedShowList = showList.sort((a, b) => a.name.localeCompare(b.name))
+  const showSelector = document.querySelector("#show-selector");
+  orderedShowList.map((show) => {
+    const showName = show.name
+    const showId = show.id
+    showSelector.innerHTML += `<option value = ${showId}>${showName}</option>`;
   })
-  .then(() => makePageForEpisodes(allEpisodes))
-  .then(() => setupSearch())
-  .then(() => allEpisodes.map((episode) => addEpisodeInSelector(episode)))
-  .catch((error) => fetchMessage(error));
 
-// Set the correct series name
-fetch(api)
-  .then((response) => response.json())
-  .then((data) => setSeriesName(data.name))
+  showSelector.addEventListener("change", (event) => {
+    const showId = event.target.value;
+    fetchEpisodes(api, showId)
+  })
+}
 
-function setSeriesName(seriesName) {
-  const seriesNameField = document.querySelector("#series-name");
-  seriesNameField.innerText = seriesName;
+function fetchEpisodes(api, showId) {
+  fetchMessage("Loading episodes")
+  let allEpisodes = [];
+
+  fetch(`${api}/${showId}/episodes`)
+    .then((response) => response.json())
+    .then((data) => allEpisodes = data)
+    .then(() => makePageForEpisodes(allEpisodes))
+    .then(() => populateEpisodeSelector(allEpisodes))
+    .then(() => setupSearch())
+    .then(() => updateEpisodeListCounter(allEpisodes, allEpisodes))
+    .catch((error) => fetchMessage(error));
+
+  // Set the correct show name
+  fetch(`${api}/${showId}`)
+    .then((response) => response.json())
+    .then((data) => setShowName(data.name))
+
+  function setShowName(showName) {
+    const showNameField = document.querySelector("#show-name");
+    showNameField.innerText = showName;
+  }
+}
+
+// Populate episodes dropdown menu, and set event listener
+function populateEpisodeSelector(allEpisodes) {
+  const episodeSelector = document.querySelector("#episode-selector");
+
+  allEpisodes.map((episode) => {
+    const episodeName = episode.name;
+    const episodeSeason = `${episode.season}`.padStart(2, "0");
+    const episodeNumber = `${episode.number}`.padStart(2, "0");
+
+    const episodeNumberAndTitle = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
+    const episodeId = episode.id;
+
+    episodeSelector.innerHTML += `<option value = ${episodeId}>${episodeNumberAndTitle}</option>`;
+  })
+
+  episodeSelector.addEventListener("change", (event) => {
+    console.log(event.target.value);
+  })
 }
 
 function makePageForEpisodes(episodeList) {
+  fetchMessage("")
   const episodeListHtml = makeEpisodeListHtml(episodeList)
   rootElem.append(episodeListHtml);
-  updateEpisodeListCounter(episodeList);
 }
 
 function makeEpisodeListHtml(episodeList) {
   let episodeListHtml = document.querySelector(".episodes-list");
-  const episodeCards = episodeList.map(makeEpisodeCard);
-
-  // If there is a episode list, delete content. If not, clone from the template.
   episodeListHtml ? episodeListHtml.innerHTML = "" : episodeListHtml = template.content.querySelector(".episodes-list").cloneNode(true)
 
-  episodeListHtml.append(...episodeCards);
 
+  if (episodeList) {
+    const episodeCards = episodeList.map(makeEpisodeCard);
+    episodeListHtml.append(...episodeCards);
+
+    return episodeListHtml;
+  }
+
+  episodeListHtml.innerHTML = "Please, select a show in the dropdown menu above";
   return episodeListHtml;
 }
 
 function addEpisodeInSelector(episode) {
-  const episodeName = episode.name;
-  const episodeSeason = `${episode.season}`.padStart(2, "0");
-  const episodeNumber = `${episode.number}`.padStart(2, "0");
 
-  const episodeNumberAndTitle = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
-  const episodeOptionValue = `S${episodeSeason}E${episodeNumber}-${episodeName}`.toLowerCase().replace(/ /g, "-")
-
-  const episodeSelector = document.querySelector("#episode-selector");
-  episodeSelector.innerHTML += `<option value = ${episodeOptionValue}>${episodeNumberAndTitle}</option>`;
 }
+
+
 
 // Make the card
 function makeEpisodeCard(episode) {
@@ -81,7 +123,7 @@ function makeEpisodeCard(episode) {
   episodeCard.querySelector(".episode-card__title")
     .innerText = episodeTitle;
 
-  episodeCard.querySelector(".episode-card__img").src = episodeImage || './No-Image-Placeholder.png';
+  episodeCard.querySelector(".episode-card__img").src = episodeImage;
   episodeCard.querySelector(".episode-card__summary").outerHTML = episodeSummary;
 
   return episodeCard;
@@ -97,12 +139,6 @@ function setupSearch() {
     filterEpisodes(searchTerm);
   });
 
-  episodeSelector.addEventListener("change", function () {
-    const selectedEpisode = episodeSelector.value;
-    const searchTerm = selectedEpisode.substring(0, selectedEpisode.indexOf("-"));
-    filterEpisodes(searchTerm);
-  });
-
   resetSearch.addEventListener("click", function () {
     filterEpisodes("");
     searchInput.value = "";
@@ -110,8 +146,8 @@ function setupSearch() {
   })
 }
 
-function filterEpisodes(searchTerm) {
-  const filteredEpisodes = allEpisodes.filter(
+function filterEpisodes(allEpisodes, searchTerm) {
+  const filteredEpisodes = episodeList.filter(
     (episode) => {
       const episodeName = episode.name;
       const episodeSeason = `${episode.season}`.padStart(2, "0");
@@ -129,7 +165,7 @@ function filterEpisodes(searchTerm) {
   makePageForEpisodes(filteredEpisodes);
 }
 
-function updateEpisodeListCounter(episodeList) {
+function updateEpisodeListCounter(episodeList, allEpisodes) {
   const episodesDisplayAmount = document.querySelector(
     ".episodes-display-amount"
   );
