@@ -8,47 +8,21 @@
   <link href="style.css" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
-<template>
-  <section class="episodes-list">
-  </section>
-  <article class="episode-card">
-    <h2 class="episode-card__title"></h2>
-    <div class="episode-card__data">
-      <img src="#" alt="" class="episode-card__img">
-      <p class="episode-card__summary"></p>
-    </div>
-  </article>
-  <div id="fetch-message"></div>
-</template>
 
 <body>
   <header>
     <h1><span id="series-name"></span> Episodes - Source: <a href="https://www.tvmaze.com/" target="_blank">TVMAZE</a>
     </h1>
-    <section id="show-episode-bar">
-      <section class="search-bar">
-        <h2>Search by Title or Summary</h2>
-        <input type="text" name="search-input" id="search-input" placeholder="Type your search here"
-          class="search-input-general">
 
-      </section>
-      <section id="show-episode-selectors__container">
-        <section class="search-bar">
-          <h2>Select a show:</h2>
-          <select name="show-selector" id="show-selector" class="search-input-general">
-            <option value="placeholder"></option>
-          </select>
-        </section>
-        <section class="search-bar">
-          <h2>Select a episode:</h2>
-          <select name="episode-selector" id="episode-selector" class="search-input-general">
-            <option value="placeholder"></option>
-          </select>
-        </section>
-      </section>
-      <button id="reset-search">
-        Reset Search
-      </button>
+    <section class="filter-bar">
+      <h2>Filter Episodes</h2>
+      <select id="name-filter">
+        <option value="">Filter by Name</option>
+      </select>
+      <select id="episode-number-filter">
+        <option value="">Filter by Episode Number</option>
+      </select>
+      <input type="text" id="search-input" placeholder="Search by Title or Summary">
       <h3 class="episodes-display-amount"></h3>
     </section>
   </header>
