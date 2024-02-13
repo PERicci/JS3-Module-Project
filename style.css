@@ -1,58 +1,27 @@
-body {
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  font-size: 16px;
-}
+#root {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-h2,
-h3 {
-  margin: 0;
-}
-
-label {
-  font-size: 1.2rem;
-}
-
-.hidden {
-  display: none;
 }
 
 header {
-  margin: 0 auto 1rem;
+  margin: 1rem;
   padding: 1rem;
   background-color: #c3c3c3;
   text-align: center;
 }
 
-#show-episode-bar {
-  display: grid;
-  gap: 1rem;
-  justify-items: center;
-}
-
+    
 .search-bar {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  margin: 1rem auto;
+  text-align: left;
 }
 
-#show-episode-selectors__container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.search-input-general {
-  padding: 0.3rem;
-  min-width: 300px;
+#search-bar input {
+  padding: 0.5rem;
   font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -61,32 +30,31 @@ header {
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
 }
 
-.search-bar h2 {
-  font-size: 1.3rem;
-  margin: 0;
+
+.episode {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: calc(33.33% - 20px); /* so that three cards can fit in a row */
+  box-sizing: border-box;
+  text-align: center; 
 }
 
-#reset-search {
-  height: 2rem;
-  width: 150px;
-
-  border-radius: 8px;
-  border: none;
-
-  background-color: #d40d0d;
-  color: white;
-  font-size: 1rem;
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
-
-  cursor: pointer;
-
-  transition: all 0.2s ease-in-out;
+.episode img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* to ensure the image is displayed as a block element for centering */
+  margin: 0 auto; /* to center the image horizontally */
 }
 
-#reset-search:hover {
-  background-color: #c40c0c;
-  scale: 1.05;
-  transition: all 0.2s ease-in-out;
+.episode h2 {
+  margin-top: 0;
+  border: 1px solid #ccc; border-radius: 15px;
+  padding: 20px; 
+}
+
+.episode .content {
+  text-align: center; 
 }
 
 .episodes-list {
@@ -95,37 +63,31 @@ header {
   gap: 2rem;
 }
 
+/* Start of my modification     */
 .episode-card {
-  width: 350px;
+  width: calc(24% - 2rem); /* I adjusted the width to make 4 cards fit in a row */
   border-radius: 10px;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
-}
-
-.episode-card__title {
   padding: 1rem;
-  margin: 0;
-
-  border: solid 2px #000;
-  border-radius: 10px;
-
-  text-align: center;
+  margin-bottom: 2rem; /* I added  some bottom margin to create space between rows */
 }
 
-.episode-card__data {
-  display: grid;
-  justify-items: center;
-  padding: 1.5rem;
+/* Media query for iPads */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .episode-card {
+    width: calc(50% - 2rem); /* I adjusted width to fit two cards for ipads*/
+  }
 }
 
-#fetch-message {
-  position: absolute;
-  margin: 0;
-  padding: 2rem;
-  background-color: white;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  color: red;
-  text-align: center;
-  font-size: 2rem;
+/* Media query for smaller devices */
+@media (max-width: 600px) {
+  .episode-card {
+    width: calc(100% - 2rem); /* i adjusted the width to fit one card for mobile phones */
+  }
+}
+
+  /* END my modification */
+footer {
+  display: block;
+  align-items: center;
 }
