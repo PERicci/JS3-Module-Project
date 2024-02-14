@@ -15,16 +15,6 @@ const showSelector = document.getElementById("show-selector");
 const resetSearch = document.getElementById("reset-search");
 let allEpisodes = []
 
-const showSelectorChangeHandler = (event) => {
-  const showId = event.target.value;
-  fetchEpisodes(api, showId);
-};
-
-const episodeSelectorChangeHandler = (event) => {
-  const episodeId = event.target.value;
-  console.log(episodeId);
-};
-
 // Fetch shows
 function fetchShows(api) {
   let showList = [];
@@ -86,6 +76,9 @@ function populateEpisodeSelector(allEpisodes) {
   })
   episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
   episodeSelector.addEventListener("change", episodeSelectorChangeHandler)
+
+  searchInput.removeEventListener("input", searchInputHandler)
+  searchInput.addEventListener("input", searchInputHandler);
 }
 
 function makePageForEpisodes(episodeList) {
@@ -130,15 +123,6 @@ function makeEpisodeCard(episode) {
   return episodeCard;
 }
 
-function setupSearchInput() {
-  searchInput.addEventListener("input", searchInputHandler);
-
-  const searchInputHandler = (event) => {
-    const searchTerm = event.value.trim().toLowerCase();
-    filterEpisodes(searchTerm);
-  }
-}
-
 function filterEpisodes(allEpisodes, searchTerm) {
   const filteredEpisodes = episodeList.filter(
     (episode) => {
@@ -158,13 +142,6 @@ function filterEpisodes(allEpisodes, searchTerm) {
   makePageForEpisodes(filteredEpisodes);
 }
 
-const resetSearchClickHandler = () => {
-  searchInput.value = "";
-  episodeSelector.innerHTML = `<option value="">Show all episodes</option>`;
-  showSelector.value = ""
-  makePageForEpisodes();
-}
-
 resetSearch.addEventListener("click", resetSearchClickHandler)
 
 function updateEpisodeListCounter(episodeList, allEpisodes) {
@@ -180,4 +157,28 @@ function fetchMessage(message) {
     fetchMessageContainer.classList.toggle("hidden");
     fetchMessageContainer.textContent = message;
   }
+}
+
+
+// Handlers
+const showSelectorChangeHandler = (event) => {
+  const showId = event.target.value;
+  fetchEpisodes(api, showId);
+};
+
+const episodeSelectorChangeHandler = (event) => {
+  const episodeId = event.target.value;
+  console.log(episodeId);
+};
+
+const searchInputHandler = (event) => {
+  const searchTerm = event.value.trim().toLowerCase();
+  filterEpisodes(searchTerm);
+}
+
+const resetSearchClickHandler = () => {
+  searchInput.value = "";
+  episodeSelector.innerHTML = `<option value="">Show all episodes</option>`;
+  showSelector.value = ""
+  makePageForEpisodes();
 }
