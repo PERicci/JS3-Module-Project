@@ -23,8 +23,8 @@ const showSelectorChangeHandler = (event) => {
 };
 
 const episodeSelectorChangeHandler = (event) => {
-  const episodeId = event.target.value;
-  console.log(episodeId);
+  const episodeId = Number(event.target.value);
+  filterEpisodesById(episodeId);
 };
 
 const searchInputHandler = (event) => {
@@ -34,9 +34,8 @@ const searchInputHandler = (event) => {
 
 const resetSearchClickHandler = () => {
   searchInput.value = "";
-  episodeSelector.innerHTML = `<option value="">Show all episodes</option>`;
-  showSelector.value = ""
-  makePageForEpisodes();
+  episodeSelector.value = '';
+  makePageForEpisodes(allEpisodes);
 }
 
 // Fetch shows
@@ -164,6 +163,18 @@ function filterEpisodesByKeyword(searchTerm) {
   );
 
   makePageForEpisodes(filteredEpisodes);
+}
+
+function filterEpisodesById(episodeId) {
+  if (episodeId) {
+    const selectedEpisode = allEpisodes.filter((episode) => {
+      console.log(episode.id === episodeId);
+      return episode.id === episodeId;
+    })
+    makePageForEpisodes(selectedEpisode)
+  } else {
+    makePageForEpisodes(allEpisodes)
+  }
 }
 
 resetSearch.addEventListener("click", resetSearchClickHandler)
