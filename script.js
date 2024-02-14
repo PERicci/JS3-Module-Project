@@ -88,21 +88,29 @@ function setShowName(showName) {
 
 // Populate episodes dropdown menu, and set event listener
 function populateEpisodeSelector(allEpisodes) {
-  allEpisodes.map((episode) => {
-    const episodeName = episode.name;
-    const episodeSeason = `${episode.season}`.padStart(2, "0");
-    const episodeNumber = `${episode.number}`.padStart(2, "0");
+  if (allEpisodes.length > 0) {
+    episodeSelector.innerHTML = "";
+    episodeSelector.innerHTML = `<option value = "">Show all Episodes</option>`
+    allEpisodes.map((episode) => {
+      const episodeName = episode.name;
+      const episodeSeason = `${episode.season}`.padStart(2, "0");
+      const episodeNumber = `${episode.number}`.padStart(2, "0");
 
-    const episodeNumberAndTitle = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
-    const episodeId = episode.id;
+      const episodeNumberAndTitle = `S${episodeSeason}E${episodeNumber} - ${episodeName}`
+      const episodeId = episode.id;
 
-    episodeSelector.innerHTML += `<option value = ${episodeId}>${episodeNumberAndTitle}</option>`;
-  })
-  episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
-  episodeSelector.addEventListener("change", episodeSelectorChangeHandler)
+      episodeSelector.innerHTML += `<option value = ${episodeId}>${episodeNumberAndTitle}</option>`;
+    })
+    episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
+    episodeSelector.addEventListener("change", episodeSelectorChangeHandler)
 
-  searchInput.removeEventListener("input", searchInputHandler)
-  searchInput.addEventListener("input", searchInputHandler);
+    searchInput.removeEventListener("input", searchInputHandler)
+    searchInput.addEventListener("input", searchInputHandler);
+  } else {
+    episodeSelector.innerHTML = "<option>No episodes found</option>";
+    episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
+    searchInput.removeEventListener("input", searchInputHandler)
+  }
 }
 
 function makePageForEpisodes(episodeList) {
@@ -168,7 +176,6 @@ function filterEpisodesByKeyword(searchTerm) {
 function filterEpisodesById(episodeId) {
   if (episodeId) {
     const selectedEpisode = allEpisodes.filter((episode) => {
-      console.log(episode.id === episodeId);
       return episode.id === episodeId;
     })
     makePageForEpisodes(selectedEpisode)
