@@ -9,6 +9,20 @@ const template = document.getElementsByTagName("template")[0];
 const rootElem = document.getElementById("root");
 const bodyElem = document.getElementsByTagName("body")[0];
 const fetchMessageContainer = document.getElementById("fetch-message")
+const searchInput = document.getElementById("search-input");
+const episodeSelector = document.getElementById("episode-selector");
+const showSelector = document.getElementById("show-selector");
+const resetSearch = document.getElementById("reset-search");
+
+const showSelectorChangeHandler = (event) => {
+  const showId = event.target.value;
+  fetchEpisodes(api, showId);
+};
+
+const episodeSelectorChangeHandler = (event) => {
+  const episodeId = event.target.value;
+  console.log(episodeId);
+};
 
 // Fetch shows
 function fetchShows(api) {
@@ -22,17 +36,11 @@ function fetchShows(api) {
 // Populate shows dropdown, and set event listener
 function populateShowSelector(showList) {
   const orderedShowList = showList.sort((a, b) => a.name.localeCompare(b.name))
-  const showSelector = document.querySelector("#show-selector");
   orderedShowList.map((show) => {
     const showName = show.name
     const showId = show.id
     showSelector.innerHTML += `<option value = ${showId}>${showName}</option>`;
   })
-
-  const showSelectorChangeHandler = (event) => {
-    const showId = event.target.value;
-    fetchEpisodes(api, showId);
-  };
 
   showSelector.addEventListener("change", showSelectorChangeHandler);
 }
@@ -55,19 +63,18 @@ function fetchEpisodes(api, showId) {
       .then((response) => response.json())
       .then((data) => setShowName(data.name))
 
-    function setShowName(showName) {
-      const showNameField = document.querySelector("#show-name");
-      showNameField.innerText = showName;
-    }
   } else {
     makePageForEpisodes();
   }
 }
 
+function setShowName(showName) {
+  const showNameField = document.querySelector("#show-name");
+  showNameField.innerText = `${showName} Episodes`;
+}
+
 // Populate episodes dropdown menu, and set event listener
 function populateEpisodeSelector(allEpisodes) {
-  const episodeSelector = document.querySelector("#episode-selector");
-
   allEpisodes.map((episode) => {
     const episodeName = episode.name;
     const episodeSeason = `${episode.season}`.padStart(2, "0");
@@ -78,10 +85,8 @@ function populateEpisodeSelector(allEpisodes) {
 
     episodeSelector.innerHTML += `<option value = ${episodeId}>${episodeNumberAndTitle}</option>`;
   })
-
-  episodeSelector.addEventListener("change", (event) => {
-    console.log(event.target.value);
-  })
+  episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
+  episodeSelector.addEventListener("change", episodeSelectorChangeHandler)
 }
 
 function makePageForEpisodes(episodeList) {
@@ -93,7 +98,6 @@ function makeEpisodeListHtml(episodeList) {
   let episodeListHtml = document.querySelector(".episodes-list");
   episodeListHtml ? episodeListHtml.innerHTML = "" : episodeListHtml = template.content.querySelector(".episodes-list").cloneNode(true)
 
-
   if (episodeList) {
     const episodeCards = episodeList.map(makeEpisodeCard);
     episodeListHtml.append(...episodeCards);
@@ -101,17 +105,12 @@ function makeEpisodeListHtml(episodeList) {
     return episodeListHtml;
   }
 
+  setShowName("No")
   episodeListHtml.innerHTML = `<h2 class="message">Please, select a show in the dropdown menu above</h2>`;
   const episodesDisplayAmount = document.querySelector(".episodes-display-amount");
   episodesDisplayAmount.innerHTML = "";
   return episodeListHtml;
 }
-
-function addEpisodeInSelector(episode) {
-
-}
-
-
 
 // Make the card
 function makeEpisodeCard(episode) {
@@ -133,10 +132,7 @@ function makeEpisodeCard(episode) {
 }
 
 function setupSearchInput() {
-  const searchInput = document.getElementById("search-input");
-  const episodeSelector = document.getElementById("episode-selector");
-  const showSelector = document.getElementById("show-selector");
-  const resetSearch = document.getElementById("reset-search");
+
 
   searchInput.addEventListener("input", searchInputHandler);
 
@@ -144,13 +140,6 @@ function setupSearchInput() {
     const searchTerm = event.value.trim().toLowerCase();
     filterEpisodes(searchTerm);
   }
-
-  resetSearch.addEventListener("click", function () {
-    filterEpisodes("");
-    searchInput.value = "";
-    episodeSelector.value = "";
-    showSelector.value = ""
-  })
 }
 
 function filterEpisodes(allEpisodes, searchTerm) {
@@ -172,6 +161,15 @@ function filterEpisodes(allEpisodes, searchTerm) {
   makePageForEpisodes(filteredEpisodes);
 }
 
+const resetSearchClickHandler = () => {
+  searchInput.value = "";
+  episodeSelector.innerHTML = `<option value="">Show all episodes</option>`;
+  showSelector.value = ""
+  makePageForEpisodes();
+}
+
+resetSearch.addEventListener("click", resetSearchClickHandler)
+
 function updateEpisodeListCounter(episodeList, allEpisodes) {
   const episodesDisplayAmount = document.querySelector(".episodes-display-amount");
   episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
@@ -180,7 +178,6 @@ function updateEpisodeListCounter(episodeList, allEpisodes) {
 function fetchMessage(message) {
 
   if (message === "") {
-    console.log('class hidden toggled');
     fetchMessageContainer.classList.toggle("hidden");
   } else {
     fetchMessageContainer.classList.toggle("hidden");
