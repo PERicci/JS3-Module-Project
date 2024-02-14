@@ -85,7 +85,6 @@ function populateEpisodeSelector(allEpisodes) {
 }
 
 function makePageForEpisodes(episodeList) {
-  fetchMessage("")
   const episodeListHtml = makeEpisodeListHtml(episodeList)
   rootElem.append(episodeListHtml);
 }
@@ -98,7 +97,7 @@ function makeEpisodeListHtml(episodeList) {
   if (episodeList) {
     const episodeCards = episodeList.map(makeEpisodeCard);
     episodeListHtml.append(...episodeCards);
-
+    fetchMessage("")
     return episodeListHtml;
   }
 
