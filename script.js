@@ -13,6 +13,7 @@ const searchInput = document.getElementById("search-input");
 const episodeSelector = document.getElementById("episode-selector");
 const showSelector = document.getElementById("show-selector");
 const resetSearch = document.getElementById("reset-search");
+let allEpisodes = []
 
 const showSelectorChangeHandler = (event) => {
   const showId = event.target.value;
@@ -46,8 +47,6 @@ function populateShowSelector(showList) {
 }
 
 function fetchEpisodes(api, showId) {
-  let allEpisodes = [];
-
   if (showId) {
     fetchMessage("Loading episodes")
     fetch(`${api}/${showId}/episodes`)
