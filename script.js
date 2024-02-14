@@ -19,7 +19,7 @@ let allEpisodes = []
 // Handlers
 const showSelectorChangeHandler = (event) => {
   const showId = event.target.value;
-  fetchEpisodes(api, showId);
+  showId ? fetchEpisodes(api, showId) : noShowSelected()
 };
 
 const episodeSelectorChangeHandler = (event) => {
@@ -33,9 +33,11 @@ const searchInputHandler = (event) => {
 }
 
 const resetSearchClickHandler = () => {
-  searchInput.value = "";
-  episodeSelector.value = '';
-  makePageForEpisodes(allEpisodes);
+  if (allEpisodes.length > 0) {
+    searchInput.value = "";
+    episodeSelector.value = '';
+    makePageForEpisodes(allEpisodes);
+  } else { }
 }
 
 // Fetch shows
@@ -193,6 +195,14 @@ function updateEpisodeListCounter(episodeList) {
     episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
   } else { episodesDisplayAmount.textContent = "" }
 
+}
+
+function noShowSelected() {
+  searchInput.value = "";
+  episodeSelector.value = '';
+  allEpisodes = []
+  makePageForEpisodes();
+  populateEpisodeSelector(allEpisodes);
 }
 
 function fetchMessage(message) {
