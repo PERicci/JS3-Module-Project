@@ -15,6 +15,30 @@ const showSelector = document.getElementById("show-selector");
 const resetSearch = document.getElementById("reset-search");
 let allEpisodes = []
 
+
+// Handlers
+const showSelectorChangeHandler = (event) => {
+  const showId = event.target.value;
+  fetchEpisodes(api, showId);
+};
+
+const episodeSelectorChangeHandler = (event) => {
+  const episodeId = event.target.value;
+  console.log(episodeId);
+};
+
+const searchInputHandler = (event) => {
+  const searchTerm = event.target.value.trim().toLowerCase();
+  filterEpisodesByKeyword(searchTerm);
+}
+
+const resetSearchClickHandler = () => {
+  searchInput.value = "";
+  episodeSelector.innerHTML = `<option value="">Show all episodes</option>`;
+  showSelector.value = ""
+  makePageForEpisodes();
+}
+
 // Fetch shows
 function fetchShows(api) {
   let showList = [];
@@ -45,6 +69,7 @@ function fetchEpisodes(api, showId) {
       .then(() => makePageForEpisodes(allEpisodes))
       .then(() => populateEpisodeSelector(allEpisodes))
       .then(() => updateEpisodeListCounter(allEpisodes, allEpisodes))
+      .then(() => fetchMessage(""))
       .catch((error) => fetchMessage(error));
 
     // Set the correct show name
@@ -84,6 +109,7 @@ function populateEpisodeSelector(allEpisodes) {
 function makePageForEpisodes(episodeList) {
   const episodeListHtml = makeEpisodeListHtml(episodeList)
   rootElem.append(episodeListHtml);
+  updateEpisodeListCounter(episodeList)
 }
 
 function makeEpisodeListHtml(episodeList) {
@@ -93,14 +119,12 @@ function makeEpisodeListHtml(episodeList) {
   if (episodeList) {
     const episodeCards = episodeList.map(makeEpisodeCard);
     episodeListHtml.append(...episodeCards);
-    fetchMessage("")
     return episodeListHtml;
   }
 
   setShowName("No")
   episodeListHtml.innerHTML = `<h2 class="message">Please, select a show in the dropdown menu above</h2>`;
-  const episodesDisplayAmount = document.querySelector(".episodes-display-amount");
-  episodesDisplayAmount.innerHTML = "";
+  updateEpisodeListCounter()
   return episodeListHtml;
 }
 
@@ -123,8 +147,8 @@ function makeEpisodeCard(episode) {
   return episodeCard;
 }
 
-function filterEpisodes(allEpisodes, searchTerm) {
-  const filteredEpisodes = episodeList.filter(
+function filterEpisodesByKeyword(searchTerm) {
+  const filteredEpisodes = allEpisodes.filter(
     (episode) => {
       const episodeName = episode.name;
       const episodeSeason = `${episode.season}`.padStart(2, "0");
@@ -144,9 +168,13 @@ function filterEpisodes(allEpisodes, searchTerm) {
 
 resetSearch.addEventListener("click", resetSearchClickHandler)
 
-function updateEpisodeListCounter(episodeList, allEpisodes) {
+function updateEpisodeListCounter(episodeList) {
   const episodesDisplayAmount = document.querySelector(".episodes-display-amount");
-  episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
+
+  if (episodeList && allEpisodes) {
+    episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
+  } else { episodesDisplayAmount.textContent = "" }
+
 }
 
 function fetchMessage(message) {
@@ -157,28 +185,4 @@ function fetchMessage(message) {
     fetchMessageContainer.classList.toggle("hidden");
     fetchMessageContainer.textContent = message;
   }
-}
-
-
-// Handlers
-const showSelectorChangeHandler = (event) => {
-  const showId = event.target.value;
-  fetchEpisodes(api, showId);
-};
-
-const episodeSelectorChangeHandler = (event) => {
-  const episodeId = event.target.value;
-  console.log(episodeId);
-};
-
-const searchInputHandler = (event) => {
-  const searchTerm = event.value.trim().toLowerCase();
-  filterEpisodes(searchTerm);
-}
-
-const resetSearchClickHandler = () => {
-  searchInput.value = "";
-  episodeSelector.innerHTML = `<option value="">Show all episodes</option>`;
-  showSelector.value = ""
-  makePageForEpisodes();
 }
