@@ -64,7 +64,7 @@ function fetchEpisodes(api, showId) {
       .then((data) => setShowName(data.name))
 
   } else {
-    makePageForEpisodes();
+    resetSearchClickHandler();
   }
 }
 
@@ -132,8 +132,6 @@ function makeEpisodeCard(episode) {
 }
 
 function setupSearchInput() {
-
-
   searchInput.addEventListener("input", searchInputHandler);
 
   const searchInputHandler = (event) => {
@@ -182,6 +180,5 @@ function fetchMessage(message) {
   } else {
     fetchMessageContainer.classList.toggle("hidden");
     fetchMessageContainer.textContent = message;
-    bodyElem.appendChild(fetchMessageContainer);
   }
 }
