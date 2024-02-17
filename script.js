@@ -54,21 +54,28 @@ function fetchShows(api) {
   fetch(api)
     .then((response) => response.json())
     .then((data) => allShows = data)
-    .then(() => populateShowSelector(allShows))
     .then(() => displayShowListPage())
+    .then(() => populateShowSelector(allShows))
+    
 }
 
 // Show list page
 
 function displayShowListPage() {
-  const showListPage = template.content.querySelector("#show-list-page").cloneNode(true)
-  console.log(showListPage);
-  rootElem.append(showListPage)
+  const showListPageElement = document.querySelector("#show-list-page")
+
+  if (showListPageElement) {
+    showListPageElement.classList.toggle("hidden");
+  } else {
+    makePageForShows(allShows)
+  }
+
 }
 
 function makePageForShows(showList) {
   const showListHtml = makeShowListHtml(showList)
-  rootElem.append(showListHtml);
+  const showListElement = document.querySelector("#show-list-page__list")
+  showListElement.append(showListHtml);
   updateShowListCounter(showList)
 }
 
@@ -83,27 +90,37 @@ function filterShowsByKeyword(searchTerm) {
   makePageForShows(filteredShows);
 }
 
-function updateShowListCounter(allShows, filteredShows) {
-  const showsDisplayAmount = document.querySelector(".episodes-display-amount");
+function updateShowListCounter(allShows, showList) {
+  const showsDisplayAmount = document.querySelector("#show-list-page__counter");
 
-  if (episodeList && allEpisodes) {
-    episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
-  } else { episodesDisplayAmount.textContent = "" }
+  if (showList && allShows) {
+    showsDisplayAmount.textContent = `Displaying ${showList.length} out of ${allShows.length} episodes`;
+  } else { showsDisplayAmount.textContent = "" }
 }
 
 function makeShowListHtml(showList) {
+  const showListElement = document.querySelector("#show-list-page__list")
+  showListElement ? showListElement.innerHTML = "" : showListElement = template.content.querySelector(".episodes-list").cloneNode(true)
+  
 
+}
+
+function makeShowCards(params) {
+  
 }
 
 // Episodes List Page
 
 // Populate shows dropdown, and set event listener
 function populateShowSelector(showList) {
+  const showListPageSelector = document.getElementById("show-list-page__dropdown");
+
   const orderedShowList = showList.sort((a, b) => a.name.localeCompare(b.name))
   orderedShowList.map((show) => {
     const showName = show.name
     const showId = show.id
     showSelector.innerHTML += `<option value = ${showId}>${showName}</option>`;
+    showListPageSelector.innerHTML += `<option value = ${showId}>${showName}</option>`;
   })
 
   showSelector.addEventListener("change", showSelectorChangeHandler);
