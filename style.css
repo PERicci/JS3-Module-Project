@@ -21,6 +21,27 @@ label {
   display: none;
 }
 
+/* shows page */
+
+#show-list-page {
+  position: absolute;
+  top: 0;
+  margin: 0 auto;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+#show-list-page__filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* episodes page */
+
 header {
   margin: 0 auto 1rem;
   padding: 1rem;

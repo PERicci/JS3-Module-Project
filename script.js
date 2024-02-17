@@ -14,7 +14,7 @@ const episodeSelector = document.getElementById("episode-selector");
 const showSelector = document.getElementById("show-selector");
 const resetSearch = document.getElementById("reset-search");
 let allEpisodes = []
-
+let allShows = []
 
 // Handlers
 const showSelectorChangeHandler = (event) => {
@@ -27,9 +27,18 @@ const episodeSelectorChangeHandler = (event) => {
   filterEpisodesById(episodeId);
 };
 
-const searchInputHandler = (event) => {
+const searchEpisodesInputHandler = (event) => {
   const searchTerm = event.target.value.trim().toLowerCase();
   filterEpisodesByKeyword(searchTerm);
+}
+
+const searchShowsInputHandler = (event) => {
+  const searchTerm = event.target.value.trim().toLowerCase();
+  filterShowsByKeyword(searchTerm);
+}
+
+const backToShowsPageHandler = () => {
+
 }
 
 const resetSearchClickHandler = () => {
@@ -42,12 +51,51 @@ const resetSearchClickHandler = () => {
 
 // Fetch shows
 function fetchShows(api) {
-  let showList = [];
   fetch(api)
     .then((response) => response.json())
-    .then((data) => showList = data)
-    .then(() => populateShowSelector(showList))
+    .then((data) => allShows = data)
+    .then(() => populateShowSelector(allShows))
+    .then(() => displayShowListPage())
 }
+
+// Show list page
+
+function displayShowListPage() {
+  const showListPage = template.content.querySelector("#show-list-page").cloneNode(true)
+  console.log(showListPage);
+  rootElem.append(showListPage)
+}
+
+function makePageForShows(showList) {
+  const showListHtml = makeShowListHtml(showList)
+  rootElem.append(showListHtml);
+  updateShowListCounter(showList)
+}
+
+function filterShowsByKeyword(searchTerm) {
+  const filteredShows = allShows.filter(
+    (show) => {
+      const result = Object.values(show).toString().toLowerCase().includes(searchTerm)
+      return result
+    }
+  );
+
+  makePageForShows(filteredShows);
+}
+
+function updateShowListCounter(allShows, filteredShows) {
+  const showsDisplayAmount = document.querySelector(".episodes-display-amount");
+
+  if (episodeList && allEpisodes) {
+    episodesDisplayAmount.textContent = `Displaying ${episodeList.length} out of ${allEpisodes.length} episodes`;
+  } else { episodesDisplayAmount.textContent = "" }
+}
+
+function makeShowListHtml(showList) {
+
+}
+
+// Episodes List Page
 
 // Populate shows dropdown, and set event listener
 function populateShowSelector(showList) {
@@ -106,12 +154,12 @@ function populateEpisodeSelector(allEpisodes) {
     episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
     episodeSelector.addEventListener("change", episodeSelectorChangeHandler)
 
-    searchInput.removeEventListener("input", searchInputHandler)
-    searchInput.addEventListener("input", searchInputHandler);
+    searchInput.removeEventListener("input", searchEpisodesInputHandler)
+    searchInput.addEventListener("input", searchEpisodesInputHandler);
   } else {
     episodeSelector.innerHTML = "<option>No episodes found</option>";
     episodeSelector.removeEventListener("change", episodeSelectorChangeHandler)
-    searchInput.removeEventListener("input", searchInputHandler)
+    searchInput.removeEventListener("input", searchEpisodesInputHandler)
   }
 }
 

@@ -19,7 +19,22 @@
     </div>
   </article>
   <section id="show-list-page">
-    <header id="show-list-page__header"></header>
+    <header id="show-list-page__header">
+      <div id="show-list-page__title">
+        <h1>Select a Show</h1>
+      </div>
+      <div id="show-list-page__filter">
+        <div id="show-list-page__search-container" class="search-bar">
+          <h2>Search</h2>
+          <input type="text" name="show-list-page__search" id="show-list-page__search" class="search-input-general">
+        </div>
+        <div id="show-list-page__dropdown-container" class="search-bar">
+          <h2>Select a show</h2>
+          <select id="show-list-page__dropdown" class="search-input-general"></select>
+        </div>
+        <p id="show-list-page__counter"></p>
+      </div>
+    </header>
     <main id="show-list-page__body">
       <section id="show-list-page__list"></section>
       <article class="show-card">
@@ -52,13 +67,13 @@
       </section>
       <section id="show-episode-selectors__container">
         <section class="search-bar">
-          <h2>Select a show:</h2>
+          <h2>Select a show</h2>
           <select name="show-selector" id="show-selector" class="search-input-general">
             <option value="">Select a show</option>
           </select>
         </section>
         <section class="search-bar">
-          <h2>Select a episode:</h2>
+          <h2>Select a episode</h2>
           <select name="episode-selector" id="episode-selector" class="search-input-general">
             <option value="">No episodes found</option>
           </select>
