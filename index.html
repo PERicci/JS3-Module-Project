@@ -42,15 +42,13 @@
 
     </main>
   </section>
-  <article class="show-card" data-showId onclick="showPageSelectShowHandler(this.dataset.showId)">
-    <h2 class="show-card__title"></h2>
+  <article class="show-card" data-showId>
+    <h2 class="show-card__title" onclick="showPageSelectShowHandler(this.parentNode.dataset.showId)"></h2>
     <section class="show-card__content-container">
-      <section class="show-card__img-container">
-        <img src="" alt="">
-      </section>
+      <img src="" alt="" class="show-card__img">
       <section class="show-card__summary"></section>
       <section class="show-card__info">
-        <p class="show-card__rate"></p>
+        <p class="show-card__rating"></p>
         <p class="show-card__genres"></p>
         <p class="show-card__status"></p>
         <p class="show-card__runtime"></p>

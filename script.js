@@ -20,13 +20,12 @@ let allShows = []
 // Handlers
 const showSelectorChangeHandler = (event) => {
   const showId = event.target.value;
-  console.log(showId);
   showId ? fetchEpisodes(api, showId) : noShowSelected()
 };
 
 const showPageSelectShowHandler = (showId) => {
-  console.log(showId);
   showId ? fetchEpisodes(api, showId) : noShowSelected()
+  showSelector.value = showId
   displayShowListPage()
 }
 
@@ -132,13 +131,19 @@ function makeShowCard(show) {
   const showTitle = show.name;
   const showImage = show.image ? show.image.medium : '';
   const showSummary = show.summary;
-  const showRate = show.rating.average;
+  const showRating = show.rating.average;
   const showGenres = show.genres.join(' | ')
   const showStatus = show.status;
   const showRuntime = show.runtime;
 
   showCard.dataset.showId = showId;
   showCard.querySelector(".show-card__title").textContent = showTitle;
+  showCard.querySelector(".show-card__img").src = showImage;
+  showCard.querySelector(".show-card__summary").outerHTML = showSummary;
+  showCard.querySelector(".show-card__rating").innerHTML = `<p><b>Rated:</b> ${showRating}</p>`;
+  showCard.querySelector(".show-card__genres").innerHTML = `<p><b>Genres:</b> ${showGenres}</p>`;
+  showCard.querySelector(".show-card__status").innerHTML = `<p><b>Status:</b> ${showStatus}</p>`;
+  showCard.querySelector(".show-card__runtime").innerHTML = `<p><b>Runtime:</b> ${showRuntime}</p>`;
 
   return showCard
 }
