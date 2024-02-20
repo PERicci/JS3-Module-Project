@@ -81,6 +81,9 @@ function setupShowPage() {
   rootElem.append(showListPageElement)
   populateShowSelector(allShows)
   makePageForShows(allShows)
+
+  const showListPageSearch = showListPageElement.querySelector("#show-list-page__search");
+  showListPageSearch.addEventListener("input", searchShowsInputHandler);
 }
 
 function displayShowListPage() {
