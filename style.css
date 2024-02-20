@@ -50,7 +50,7 @@ label {
 }
 
 #show-list-page__list {
-  padding: 1rem 2rem;
+  padding: 1rem 2rem 4rem;
 
   display: flex;
   flex-wrap: wrap;
@@ -207,12 +207,24 @@ header {
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
+
+  padding-bottom: 4rem;
 }
+
+/* episode card */
 
 .episode-card {
   width: 350px;
-  border-radius: 10px;
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  background: #ffffff;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(232, 232, 232, 1) 100%
+  );
+
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #00000063;
 }
 
 .episode-card__title {
@@ -229,6 +241,34 @@ header {
   display: grid;
   justify-items: center;
   padding: 1.5rem;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  height: 3rem;
+  width: 100%;
+  background-color: #c3c3c3;
+  text-align: center;
+}
+
+footer a {
+  text-decoration: none;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+footer a:visited {
+  text-decoration: none;
+  color: initial;
+}
+
+footer a:hover,
+footer a:active {
+  color: #0049e6;
+  transition: all 0.2s ease-in-out;
 }
 
 #fetch-message {
