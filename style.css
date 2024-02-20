@@ -1,6 +1,7 @@
 body {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-size: 16px;
+  margin: 0;
 }
 
 h1 {
@@ -45,9 +46,68 @@ label {
 }
 
 #show-list-page__main {
-  background-color: white;
+  background-color: #f5f6f7;
 }
 
+#show-list-page__list {
+  padding: 1rem 2rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* show card */
+
+.show-card {
+  padding: 1rem;
+  background: #ffffff;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(232, 232, 232, 1) 100%
+  );
+
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #00000063;
+}
+
+.show-card__title {
+  display: inline-block;
+  text-align: left;
+  font-size: 2rem;
+  padding: 0 0 1rem;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.show-card__title:hover,
+.show-card__title:focus {
+  color: #0049e6;
+  scale: 1.04;
+  transition: all 0.2s ease-in-out;
+}
+
+.show-card__content-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.show-card__summary {
+  flex: 2 1 50%;
+}
+
+.show-card__info {
+  flex: 1 2 150px;
+
+  padding: 0.5rem 2rem;
+  background-color: #f5f6f7;
+
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px #00000063;
+}
 /* episodes page */
 
 header {

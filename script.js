@@ -48,7 +48,7 @@ const showListPageSelectorChangeHandler = (event) => {
   const showId = event.target.value;
 
   if (showId) {
-    const filteredShowList = allShows.filter(show => show.id === showId);
+    const filteredShowList = allShows.filter(show => show.id == showId);
     makePageForShows(filteredShowList);
   } else {
     makePageForShows(allShows);
@@ -139,7 +139,7 @@ function makeShowCard(show) {
   showCard.dataset.showId = showId;
   showCard.querySelector(".show-card__title").textContent = showTitle;
   showCard.querySelector(".show-card__img").src = showImage;
-  showCard.querySelector(".show-card__summary").outerHTML = showSummary;
+  showCard.querySelector(".show-card__summary").innerHTML = showSummary;
   showCard.querySelector(".show-card__rating").innerHTML = `<p><b>Rated:</b> ${showRating}</p>`;
   showCard.querySelector(".show-card__genres").innerHTML = `<p><b>Genres:</b> ${showGenres}</p>`;
   showCard.querySelector(".show-card__status").innerHTML = `<p><b>Status:</b> ${showStatus}</p>`;
