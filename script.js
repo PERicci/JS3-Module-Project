@@ -14,6 +14,7 @@ const searchInput = document.getElementById("search-input");
 const episodeSelector = document.getElementById("episode-selector");
 const showSelector = document.getElementById("show-selector");
 const resetSearch = document.getElementById("reset-search");
+const backToShowsPage = document.getElementById("back-to-show-page");
 let allEpisodes = []
 let allShows = []
 
@@ -56,12 +57,19 @@ const showListPageSelectorChangeHandler = (event) => {
 }
 
 const backToShowsPageHandler = () => {
+  const showListPageSelector = showListPageElement.querySelector("#show-list-page__selector")
 
+  resetSearchClickHandler()
+  showSelector.value = ''
+  showListPageSelector.value = ''
+  noShowSelected()
+  makePageForShows(allShows)
+  displayShowListPage()
 }
 
 const resetSearchClickHandler = () => {
   if (allEpisodes.length > 0) {
-    searchInput.value = "";
+    searchInput.value = '';
     episodeSelector.value = '';
     makePageForEpisodes(allEpisodes);
   } else { }
@@ -88,6 +96,7 @@ function setupShowPage() {
 
 function displayShowListPage() {
   showListPageElement.classList.toggle("hidden");
+
 }
 
 function makePageForShows(showList) {
@@ -297,6 +306,7 @@ function filterEpisodesById(episodeId) {
 }
 
 resetSearch.addEventListener("click", resetSearchClickHandler)
+backToShowsPage.addEventListener("click", backToShowsPageHandler)
 
 function updateEpisodeListCounter(episodeList) {
   const episodesDisplayAmount = document.querySelector(".episodes-display-amount");
