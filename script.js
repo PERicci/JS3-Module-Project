@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const template = document.getElementsByTagName("template")[0];
+const showListPageElement = template.content.querySelector("#show-list-page").cloneNode(true)
 const rootElem = document.getElementById("root");
 const bodyElem = document.getElementsByTagName("body")[0];
 const fetchMessageContainer = document.getElementById("fetch-message")
@@ -19,8 +20,15 @@ let allShows = []
 // Handlers
 const showSelectorChangeHandler = (event) => {
   const showId = event.target.value;
+  console.log(showId);
   showId ? fetchEpisodes(api, showId) : noShowSelected()
 };
+
+const showPageSelectShowHandler = (showId) => {
+  console.log(showId);
+  showId ? fetchEpisodes(api, showId) : noShowSelected()
+  displayShowListPage()
+}
 
 const episodeSelectorChangeHandler = (event) => {
   const episodeId = Number(event.target.value);
@@ -35,6 +43,17 @@ const searchEpisodesInputHandler = (event) => {
 const searchShowsInputHandler = (event) => {
   const searchTerm = event.target.value.trim().toLowerCase();
   filterShowsByKeyword(searchTerm);
+}
+
+const showListPageSelectorChangeHandler = (event) => {
+  const showId = event.target.value;
+
+  if (showId) {
+    const filteredShowList = allShows.filter(show => show.id === showId);
+    makePageForShows(filteredShowList);
+  } else {
+    makePageForShows(allShows);
+  }
 }
 
 const backToShowsPageHandler = () => {
@@ -54,29 +73,25 @@ function fetchShows(api) {
   fetch(api)
     .then((response) => response.json())
     .then((data) => allShows = data)
-    .then(() => displayShowListPage())
-    .then(() => populateShowSelector(allShows))
-    
+    .then(() => setupShowPage())
 }
 
 // Show list page
 
+function setupShowPage() {
+  rootElem.append(showListPageElement)
+  populateShowSelector(allShows)
+  makePageForShows(allShows)
+}
+
 function displayShowListPage() {
-  const showListPageElement = document.querySelector("#show-list-page")
-
-  if (showListPageElement) {
-    showListPageElement.classList.toggle("hidden");
-  } else {
-    makePageForShows(allShows)
-  }
-
+  showListPageElement.classList.toggle("hidden");
 }
 
 function makePageForShows(showList) {
   const showListHtml = makeShowListHtml(showList)
-  const showListElement = document.querySelector("#show-list-page__list")
-  showListElement.append(showListHtml);
   updateShowListCounter(showList)
+
 }
 
 function filterShowsByKeyword(searchTerm) {
@@ -90,30 +105,49 @@ function filterShowsByKeyword(searchTerm) {
   makePageForShows(filteredShows);
 }
 
-function updateShowListCounter(allShows, showList) {
-  const showsDisplayAmount = document.querySelector("#show-list-page__counter");
+function updateShowListCounter(showList) {
+  const showsDisplayAmount = showListPageElement.querySelector("#show-list-page__counter");
 
   if (showList && allShows) {
-    showsDisplayAmount.textContent = `Displaying ${showList.length} out of ${allShows.length} episodes`;
+    showsDisplayAmount.textContent = `Displaying ${showList.length} out of ${allShows.length} shows`;
   } else { showsDisplayAmount.textContent = "" }
 }
 
 function makeShowListHtml(showList) {
-  const showListElement = document.querySelector("#show-list-page__list")
-  showListElement ? showListElement.innerHTML = "" : showListElement = template.content.querySelector(".episodes-list").cloneNode(true)
-  
+  let showListHtml = showListPageElement.querySelector("#show-list-page__list")
+  showListHtml.innerHTML = ""
 
+  if (showList) {
+    const showCards = showList.map(makeShowCard);
+    showListHtml.append(...showCards);
+  } else {
+    showListHtml.innerHTML = `<h2 class="message">No show found</h2>`;
+  }
 }
 
-function makeShowCards(params) {
-  
+function makeShowCard(show) {
+  const showCard = template.content.querySelector(".show-card").cloneNode(true)
+
+  const showId = show.id;
+  const showTitle = show.name;
+  const showImage = show.image ? show.image.medium : '';
+  const showSummary = show.summary;
+  const showRate = show.rating.average;
+  const showGenres = show.genres.join(' | ')
+  const showStatus = show.status;
+  const showRuntime = show.runtime;
+
+  showCard.dataset.showId = showId;
+  showCard.querySelector(".show-card__title").textContent = showTitle;
+
+  return showCard
 }
 
-// Episodes List Page
 
 // Populate shows dropdown, and set event listener
 function populateShowSelector(showList) {
-  const showListPageSelector = document.getElementById("show-list-page__dropdown");
+  const showListPageSelector = showListPageElement.querySelector("#show-list-page__selector")
+  showListPageSelector.innerHTML += `<option value="">Select a show</option>`
 
   const orderedShowList = showList.sort((a, b) => a.name.localeCompare(b.name))
   orderedShowList.map((show) => {
@@ -124,7 +158,10 @@ function populateShowSelector(showList) {
   })
 
   showSelector.addEventListener("change", showSelectorChangeHandler);
+  showListPageSelector.addEventListener("change", showListPageSelectorChangeHandler);
 }
+
+// Episodes List Page
 
 function fetchEpisodes(api, showId) {
   if (showId) {
@@ -202,7 +239,7 @@ function makeEpisodeListHtml(episodeList) {
   return episodeListHtml;
 }
 
-// Make the card
+// Make the episode card
 function makeEpisodeCard(episode) {
   const episodeCard = template.content.querySelector(".episode-card").cloneNode(true);
 

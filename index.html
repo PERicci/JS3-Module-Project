@@ -9,6 +9,7 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <template>
+  <!-- Episodes Template -->
   <section class="episodes-list">
   </section>
   <article class="episode-card">
@@ -18,6 +19,7 @@
       <p class="episode-card__summary"></p>
     </div>
   </article>
+  <!-- Shows Template -->
   <section id="show-list-page">
     <header id="show-list-page__header">
       <div id="show-list-page__title">
@@ -28,30 +30,33 @@
           <h2>Search</h2>
           <input type="text" name="show-list-page__search" id="show-list-page__search" class="search-input-general">
         </div>
-        <div id="show-list-page__dropdown-container" class="search-bar">
+        <div id="show-list-page__selector-container" class="search-bar">
           <h2>Select a show</h2>
-          <select id="show-list-page__dropdown" class="search-input-general"></select>
+          <select id="show-list-page__selector" class="search-input-general"></select>
         </div>
         <p id="show-list-page__counter"></p>
       </div>
     </header>
     <main id="show-list-page__main">
       <section id="show-list-page__list"></section>
-      <article class="show-card">
-        <h2 class="show-card__title"></h2>
-        <section class="show-card__content-container">
-          <section class="show-card__title"></section>
-          <section class="show-card__summary"></section>
-          <section class="show-card__info">
-            <p class="show-card__rate"></p>
-            <p class="show-card__genres"></p>
-            <p class="show-card__status"></p>
-            <p class="show-card__runtime"></p>
-          </section>
-        </section>
-      </article>a
+
     </main>
   </section>
+  <article class="show-card" data-showId onclick="showPageSelectShowHandler(this.dataset.showId)">
+    <h2 class="show-card__title"></h2>
+    <section class="show-card__content-container">
+      <section class="show-card__img-container">
+        <img src="" alt="">
+      </section>
+      <section class="show-card__summary"></section>
+      <section class="show-card__info">
+        <p class="show-card__rate"></p>
+        <p class="show-card__genres"></p>
+        <p class="show-card__status"></p>
+        <p class="show-card__runtime"></p>
+      </section>
+    </section>
+  </article>
 </template>
 
 <body>

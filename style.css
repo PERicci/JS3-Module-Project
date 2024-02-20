@@ -32,12 +32,20 @@ label {
   min-height: 100vh;
 }
 
+#show-list-page__header {
+  margin: 0;
+}
+
 #show-list-page__filter {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
   align-items: center;
+}
+
+#show-list-page__main {
+  background-color: white;
 }
 
 /* episodes page */
