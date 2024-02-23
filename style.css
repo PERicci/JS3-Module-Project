@@ -50,7 +50,7 @@ label {
 }
 
 #show-list-page__list {
-  padding: 1rem 2rem 4rem;
+  padding: 1rem 8rem 4rem;
 
   display: flex;
   flex-wrap: wrap;
@@ -70,6 +70,8 @@ label {
 
   border-radius: 5px;
   box-shadow: 2px 2px 5px #00000063;
+
+  width: 100%;
 }
 
 .show-card__title {
@@ -91,12 +93,22 @@ label {
 
 .show-card__content-container {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   flex-wrap: wrap;
+}
+
+.show-card__img {
+  width: auto;
+  height: 100%;
 }
 
 .show-card__summary {
   flex: 2 1 50%;
+  min-width: 350px;
+}
+
+.show-card__summary p {
+  margin: 0 auto;
 }
 
 .show-card__info {
@@ -292,4 +304,70 @@ footer a:active {
   color: red;
   text-align: center;
   font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+  #show-list-page__list {
+    padding: 0 0 4.5rem;
+  }
+
+  .show-card {
+    padding: 0.5rem;
+  }
+
+  .show-card__img {
+    margin: 0 auto;
+  }
+
+  .show-card__title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .show-card__summary {
+    min-width: fit-content;
+    width: 100%;
+  }
+
+  .show-card__info {
+    padding: 0.5rem;
+  }
+
+  .show-card__info p {
+    margin: 0;
+  }
+
+  .episode-card {
+    width: 90%;
+    padding: 0.5rem;
+  }
+
+  .episode-card__title {
+    padding: 0.5rem;
+  }
+
+  .episode-card__img {
+    margin-bottom: 0.5rem;
+  }
+
+  .episode-card__data {
+    grid-template-columns: 1fr;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .episode-card__data p {
+    margin: 0;
+  }
+
+  #reset-search {
+    margin-bottom: 1rem;
+  }
+
+  footer {
+    height: auto;
+  }
+  footer p {
+    margin: 0.5rem;
+  }
 }
