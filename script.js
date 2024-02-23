@@ -100,9 +100,8 @@ function displayShowListPage() {
 }
 
 function makePageForShows(showList) {
-  const showListHtml = makeShowListHtml(showList)
+  makeShowListHtml(showList)
   updateShowListCounter(showList)
-
 }
 
 function filterShowsByKeyword(searchTerm) {
@@ -251,7 +250,7 @@ function makeEpisodeListHtml(episodeList) {
   }
 
   setShowName("No")
-  episodeListHtml.innerHTML = `<h2 class="message">Please, select a show in the dropdown menu above</h2>`;
+  episodeListHtml.innerHTML = `<h2 class="message">Please select a show from the list.</h2>`;
   updateEpisodeListCounter()
   return episodeListHtml;
 }
